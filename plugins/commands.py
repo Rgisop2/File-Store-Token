@@ -12,7 +12,7 @@ from plugins.dbusers import db
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
-from utils import verify_user, check_token, check_verification, get_token
+from utils import verify_user, check_token, check_verification, get_token, verify_user_system_1, verify_user_system_2
 from config import *
 import re
 import json
@@ -91,18 +91,27 @@ async def start(client, message):
     if data.split("-", 1)[0] == "verify":
         userid = data.split("-", 2)[1]
         token = data.split("-", 3)[2]
+        system = data.split("-", 4)[3] if len(data.split("-")) > 4 else 1  # extract verification system from link
+        
         if str(message.from_user.id) != str(userid):
             return await message.reply_text(
                 text="<b>Invalid link or Expired link !</b>",
                 protect_content=True
             )
-        is_valid = await check_token(client, userid, token)
+        is_valid = await check_token(client, userid, token, system=system)  # pass system parameter
         if is_valid == True:
-            await message.reply_text(
-                text=f"<b>Hey {message.from_user.mention}, You are successfully verified !\nNow you have unlimited access for all files till today midnight.</b>",
-                protect_content=True
-            )
-            await verify_user(client, userid, token)
+            if system == 1:
+                await verify_user_system_1(client, userid, token)  # use system 1 verification
+                await message.reply_text(
+                    text=f"<b>Hey {message.from_user.mention}, You are successfully verified in Stage 1 !\nYou have access for the next {PASTIME // 60} minutes. After that, complete Stage 2 verification for permanent access.</b>",
+                    protect_content=True
+                )
+            else:
+                await verify_user_system_2(client, userid, token)  # use system 2 verification
+                await message.reply_text(
+                    text=f"<b>Hey {message.from_user.mention}, You are successfully verified in Stage 2 !\nNow you have unlimited access for all files.</b>",
+                    protect_content=True
+                )
         else:
             return await message.reply_text(
                 text="<b>Invalid link or Expired link !</b>",

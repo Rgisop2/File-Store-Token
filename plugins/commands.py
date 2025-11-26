@@ -78,36 +78,34 @@ async def start(client, message):
         )
         return
 
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-    
     data = message.command[1]
     try:
         pre, file_id = data.split('_', 1)
     except:
         file_id = data
         pre = ""
+    
+    # Handle verification links
     if data.split("-", 1)[0] == "verify":
         userid = data.split("-", 2)[1]
         token = data.split("-", 3)[2]
-        system = data.split("-", 4)[3] if len(data.split("-")) > 4 else 1  # extract verification system from link
+        system = data.split("-", 4)[3] if len(data.split("-")) > 4 else 1
         
         if str(message.from_user.id) != str(userid):
             return await message.reply_text(
                 text="<b>Invalid link or Expired link !</b>",
                 protect_content=True
             )
-        is_valid = await check_token(client, userid, token, system=system)  # pass system parameter
+        is_valid = await check_token(client, userid, token, system=system)
         if is_valid == True:
             if system == 1:
-                await verify_user_system_1(client, userid, token)  # use system 1 verification
+                await verify_user_system_1(client, userid, token)
                 await message.reply_text(
                     text=f"<b>Hey {message.from_user.mention}, You are successfully verified in Stage 1 !\nYou have access for the next {PASTIME // 60} minutes. After that, complete Stage 2 verification for permanent access.</b>",
                     protect_content=True
                 )
             else:
-                await verify_user_system_2(client, userid, token)  # use system 2 verification
+                await verify_user_system_2(client, userid, token)
                 await message.reply_text(
                     text=f"<b>Hey {message.from_user.mention}, You are successfully verified in Stage 2 !\nNow you have unlimited access for all files.</b>",
                     protect_content=True
@@ -117,9 +115,12 @@ async def start(client, message):
                 text="<b>Invalid link or Expired link !</b>",
                 protect_content=True
             )
+        return
+    
     elif data.split("-", 1)[0] == "BATCH":
         try:
-            if not await check_verification(client, message.from_user.id) and VERIFY_MODE == True:
+            # Only check verification if VERIFY_MODE is ON
+            if VERIFY_MODE == True and not await check_verification(client, message.from_user.id):
                 btn = [[
                     InlineKeyboardButton("Verify", url=await get_token(client, message.from_user.id, f"https://telegram.me/{username}?start="))
                 ],[
@@ -216,12 +217,8 @@ async def start(client, message):
             await k.edit_text("<b>Your All Files/Videos is successfully deleted!!!</b>")
         return
 
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-
     pre, decode_file_id = ((base64.urlsafe_b64decode(data + "=" * (-len(data) % 4))).decode("ascii")).split("_", 1)
-    if not await check_verification(client, message.from_user.id) and VERIFY_MODE == True:
+    if VERIFY_MODE == True and not await check_verification(client, message.from_user.id):
         btn = [[
             InlineKeyboardButton("Verify", url=await get_token(client, message.from_user.id, f"https://telegram.me/{username}?start="))
         ],[

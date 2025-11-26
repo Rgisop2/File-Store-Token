@@ -1,7 +1,4 @@
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-
+# Credit: @Hanimes_Hindi
 
 import re
 import os
@@ -53,24 +50,34 @@ CUSTOM_FILE_CAPTION = environ.get("CUSTOM_FILE_CAPTION", f"{script.CAPTION}")
 BATCH_FILE_CAPTION = environ.get("BATCH_FILE_CAPTION", CUSTOM_FILE_CAPTION)
 
 # Enable - True or Disable - False
-PUBLIC_FILE_STORE = is_enabled((environ.get('PUBLIC_FILE_STORE', "True")), True)
+PUBLIC_FILE_STORE = is_enabled((environ.get('PUBLIC_FILE_STORE', "False")), True)
 
-# Verify Info :-
-VERIFY_MODE = bool(environ.get('VERIFY_MODE', True)) # Set True or False
+# Verification System 1
+VERIFY_MODE_1 = bool(environ.get('VERIFY_MODE_1', True)) # Set True or False
+SHORTLINK_URL_1 = environ.get("SHORTLINK_URL_1", "arolinks.com") # shortlink domain without https://
+SHORTLINK_API_1 = environ.get("SHORTLINK_API_1", "2b3dd0b54ab06c6c8e6cf617f20d5fff15ee1b71") # shortlink api
+VERIFY_TIME_1 = int(environ.get("VERIFY_TIME_1", "60")) # Verification time in seconds
 
-# If Verify Mode Is True Then Fill All Required Variable, If False Then Don't Fill.
-SHORTLINK_URL = environ.get("SHORTLINK_URL", "arolinks.com") # shortlink domain without https://
-SHORTLINK_API = environ.get("SHORTLINK_API", "2b3dd0b54ab06c6c8e6cf617f20d5fff15ee1b71") # shortlink api
-VERIFY_TUTORIAL = environ.get("VERIFY_TUTORIAL", "https://t.me/c/2073865889/2096") # how to open link 
+# Verification System 2
+VERIFY_MODE_2 = bool(environ.get('VERIFY_MODE_2', True)) # Set True or False
+SHORTLINK_URL_2 = environ.get("SHORTLINK_URL_2", "arolinks.com") # shortlink domain without https://
+SHORTLINK_API_2 = environ.get("SHORTLINK_API_2", "2b3dd0b54ab06c6c8e6cf617f20d5fff15ee1b71") # shortlink api
+VERIFY_TIME_2 = int(environ.get("VERIFY_TIME_2", "60")) # Verification time in seconds
+
+# Access time after first verification (default 30 minutes = 1800 seconds)
+PASTIME = int(environ.get("PASTIME", "1800")) # Time in seconds
+
+# Verification image URL (can be customized per user)
+VERIFY_IMG = environ.get("VERIFY_IMG", "https://i.ibb.co/KpzgscTP/7700112188-a0d84bee.jpg")
 
 # Website Info:
-WEBSITE_URL_MODE = bool(environ.get('WEBSITE_URL_MODE', True)) # Set True or False
+WEBSITE_URL_MODE = bool(environ.get('WEBSITE_URL_MODE', False)) # Set True or False
 
 # If Website Url Mode Is True Then Fill All Required Variable, If False Then Don't Fill.
 WEBSITE_URL = environ.get("WEBSITE_URL", "https://piracy-report.blogspot.com/2025/11/online.html") # For More Information Check Video On Yt - @Tech_VJ
 
 # File Stream Config
-STREAM_MODE = bool(environ.get('STREAM_MODE', True)) # Set True or False
+STREAM_MODE = bool(environ.get('STREAM_MODE', False)) # Set True or False
 
 # If Stream Mode Is True Then Fill All Required Variable, If False Then Don't Fill.
 MULTI_CLIENT = False
@@ -81,9 +88,3 @@ if 'DYNO' in environ:
 else:
     ON_HEROKU = False
 URL = environ.get("URL", "https://testofvjfilter-1fa60b1b8498.herokuapp.com/")
-
-
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-    

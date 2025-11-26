@@ -60,8 +60,8 @@ VERIFY_TIME_1 = int(environ.get("VERIFY_TIME_1", "60")) # Verification time in s
 
 # Verification System 2
 VERIFY_MODE_2 = bool(environ.get('VERIFY_MODE_2', True)) # Set True or False
-SHORTLINK_URL_2 = environ.get("SHORTLINK_URL_2", "arolinks.com") # shortlink domain without https://
-SHORTLINK_API_2 = environ.get("SHORTLINK_API_2", "2b3dd0b54ab06c6c8e6cf617f20d5fff15ee1b71") # shortlink api
+SHORTLINK_URL_2 = environ.get("SHORTLINK_URL_2", "publicearn.com") # shortlink domain without https://
+SHORTLINK_API_2 = environ.get("SHORTLINK_API_2", "b997dad6d480948e09c54c10619c2175062c5678") # shortlink api
 VERIFY_TIME_2 = int(environ.get("VERIFY_TIME_2", "60")) # Verification time in seconds
 
 # Access time after first verification (default 30 minutes = 1800 seconds)

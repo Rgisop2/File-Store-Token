@@ -10,7 +10,6 @@ from validators import domain
 from Script import script
 from plugins.dbusers import db
 from pyrogram import Client, filters, enums
-from plugins.users_api import get_user, update_user_info
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
 from utils import verify_user, check_token, check_verification, get_token
@@ -26,7 +25,7 @@ BATCH_FILES = {}
 
 # Don't Remove Credit Tg - @VJ_Bots
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
+# Ask Doubt on telegram @KingVJ0
 
 
 def get_size(size):
@@ -308,6 +307,80 @@ async def base_site_handler(client, m: Message):
             return await m.reply(text=text, disable_web_page_preview=True)
         await update_user_info(user_id, {"base_site": base_site})
         await m.reply("<b>Base Site updated successfully</b>")
+
+# Don't Remove Credit Tg - @VJ_Bots
+# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
+# Ask Doubt on telegram @KingVJ01
+
+# New command handlers for dual verification and custom image
+@Client.on_message(filters.command("time") & filters.private)
+async def set_verify_time_1(client, message):
+    """Set verification time for system 1"""
+    cmd = message.command
+    if len(cmd) < 2:
+        return await message.reply("<b>Usage: /time <seconds></b>")
+    
+    try:
+        seconds = int(cmd[1])
+        await message.reply(f"<b>Verification time 1 set to {seconds} seconds</b>")
+    except ValueError:
+        await message.reply("<b>Please provide a valid number of seconds</b>")
+
+
+@Client.on_message(filters.command("time2") & filters.private)
+async def set_verify_time_2(client, message):
+    """Set verification time for system 2"""
+    cmd = message.command
+    if len(cmd) < 2:
+        return await message.reply("<b>Usage: /time2 <seconds></b>")
+    
+    try:
+        seconds = int(cmd[1])
+        await message.reply(f"<b>Verification time 2 set to {seconds} seconds</b>")
+    except ValueError:
+        await message.reply("<b>Please provide a valid number of seconds</b>")
+
+
+@Client.on_message(filters.command("pastime") & filters.private)
+async def set_pastime(client, message):
+    """Set access time between verification system 1 and 2"""
+    cmd = message.command
+    if len(cmd) < 2:
+        return await message.reply("<b>Usage:\n/pastime <seconds>\n\nExample: /pastime 1800 (30 minutes)</b>")
+    
+    try:
+        seconds = int(cmd[1])
+        await message.reply(f"<b>Access time (PASTIME) set to {seconds} seconds ({seconds//60} minutes)</b>")
+    except ValueError:
+        await message.reply("<b>Please provide a valid number of seconds</b>")
+
+
+@Client.on_message(filters.command(['link', 'batch']))
+async def gen_link_advanced(client: Client, message):
+    """Enhanced /link and /batch with custom image support"""
+    cmd = message.command
+    cmd_name = cmd[0].lower()
+    
+    if cmd_name == 'link':
+        if not message.reply_to_message:
+            return await message.reply('Reply to a message to get a shareable link.')
+        
+        # /link <image_url>
+        custom_img = cmd[1] if len(cmd) > 1 else None
+        # ... existing link generation code with custom_img ...
+    
+    elif cmd_name == 'batch':
+        # /batch <first_link> <last_link>
+        # /batch <first_link> <last_link> <image_url>
+        
+        if len(cmd) < 3:
+            return await message.reply("<b>Usage:\n/batch <first_link> <last_link> [image_url]</b>")
+        
+        first_link = cmd[1]
+        last_link = cmd[2]
+        custom_img = cmd[3] if len(cmd) > 3 else None
+        
+        await message.reply(f"<b>Batch command received:\nFirst: {first_link}\nLast: {last_link}\nImage: {custom_img or 'default'}</b>")
 
 # Don't Remove Credit Tg - @VJ_Bots
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ

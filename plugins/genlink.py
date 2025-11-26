@@ -56,9 +56,13 @@ async def gen_link_s(bot, message):
     if not replied:
         return await message.reply('Reply to a message to get a shareable link.')
 
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
+    cmd = message.command
+    link_image_url = None
+    if len(cmd) > 1:
+        potential_image = cmd[1].strip()
+        image_extensions = ('.jpg', '.jpeg', '.png', '.webp')
+        if potential_image.lower().endswith(image_extensions):
+            link_image_url = potential_image
     
     post = await replied.copy(LOG_CHANNEL)
     file_id = str(post.id)
@@ -67,6 +71,7 @@ async def gen_link_s(bot, message):
     outstr = base64.urlsafe_b64encode(string.encode("ascii")).decode().strip("=")
     user_id = message.from_user.id
     user = await get_user(user_id)
+    
     if WEBSITE_URL_MODE == True:
         share_link = f"{WEBSITE_URL}?Tech_VJ={outstr}"
     else:
@@ -76,7 +81,6 @@ async def gen_link_s(bot, message):
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🖇️ sʜᴏʀᴛ ʟɪɴᴋ :- {short_link}</b>")
     else:
         await message.reply(f"<b>⭕ ʜᴇʀᴇ ɪs ʏᴏᴜʀ ʟɪɴᴋ:\n\n🔗 ᴏʀɪɢɪɴᴀʟ ʟɪɴᴋ :- {share_link}</b>")
-        
 
 # Don't Remove Credit Tg - @VJ_Bots
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
@@ -86,27 +90,37 @@ async def gen_link_s(bot, message):
 async def gen_link_batch(bot, message):
     username = (await bot.get_me()).username
     if " " not in message.text:
-        return await message.reply("Use correct format.\nExample /batch https://t.me/vj_botz/10 https://t.me/vj_botz/20.")
+        return await message.reply("Use correct format.\nExample /batch https://t.me/vj_botz/10 https://t.me/vj_botz/20 [image_url]")
+    
     links = message.text.strip().split(" ")
-    if len(links) != 3:
-        return await message.reply("Use correct format.\nExample /batch https://t.me/vj_botz/10 https://t.me/vj_botz/20.")
-    cmd, first, last = links
+    if len(links) < 3 or len(links) > 4:
+        return await message.reply("Use correct format.\nExample /batch https://t.me/vj_botz/10 https://t.me/vj_botz/20 [image_url]")
+    
+    cmd = links[0]
+    first = links[1]
+    last = links[2]
+    
+    batch_image_url = None
+    if len(links) == 4:
+        potential_image = links[3].strip()
+        image_extensions = ('.jpg', '.jpeg', '.png', '.webp')
+        if potential_image.lower().endswith(image_extensions):
+            batch_image_url = potential_image
+        else:
+            return await message.reply("Third argument must be an image URL ending with .jpg, .jpeg, .png, or .webp")
+    
     regex = re.compile("(https://)?(t\.me/|telegram\.me/|telegram\.dog/)(c/)?(\d+|[a-zA-Z_0-9]+)/(\d+)$")
     match = regex.match(first)
     if not match:
-        return await message.reply('Invalid link')
+        return await message.reply('Invalid first link')
     f_chat_id = match.group(4)
     f_msg_id = int(match.group(5))
     if f_chat_id.isnumeric():
         f_chat_id = int(("-100" + f_chat_id))
 
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-    
     match = regex.match(last)
     if not match:
-        return await message.reply('Invalid link')
+        return await message.reply('Invalid last link')
     l_chat_id = match.group(4)
     l_msg_id = int(match.group(5))
     if l_chat_id.isnumeric():
@@ -123,19 +137,11 @@ async def gen_link_batch(bot, message):
     except Exception as e:
         return await message.reply(f'Errors - {e}')
 
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
-    
     sts = await message.reply("**ɢᴇɴᴇʀᴀᴛɪɴɢ ʟɪɴᴋ ғᴏʀ ʏᴏᴜʀ ᴍᴇssᴀɢᴇ**.\n**ᴛʜɪs ᴍᴀʏ ᴛᴀᴋᴇ ᴛɪᴍᴇ ᴅᴇᴘᴇɴᴅɪɴɢ ᴜᴘᴏɴ ɴᴜᴍʙᴇʀ ᴏғ ᴍᴇssᴀɢᴇs**")
 
     FRMT = "**ɢᴇɴᴇʀᴀᴛɪɴɢ ʟɪɴᴋ...**\n**ᴛᴏᴛᴀʟ ᴍᴇssᴀɢᴇs:** {total}\n**ᴅᴏɴᴇ:** {current}\n**ʀᴇᴍᴀɪɴɪɴɢ:** {rem}\n**sᴛᴀᴛᴜs:** {sts}"
 
     outlist = []
-
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
 
     # file store without db channel
     og_msg = 0
@@ -155,10 +161,6 @@ async def gen_link_batch(bot, message):
         }
         og_msg +=1
         outlist.append(file)
-
-# Don't Remove Credit Tg - @VJ_Bots
-# Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
-# Ask Doubt on telegram @KingVJ01
 
     with open(f"batchmode_{message.from_user.id}.json", "w+") as out:
         json.dump(outlist, out)
@@ -181,5 +183,3 @@ async def gen_link_batch(bot, message):
 # Don't Remove Credit Tg - @VJ_Bots
 # Subscribe YouTube Channel For Amazing Bot https://youtube.com/@Tech_VJ
 # Ask Doubt on telegram @KingVJ01
-
-

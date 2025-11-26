@@ -12,7 +12,7 @@ from plugins.dbusers import db
 from pyrogram import Client, filters, enums
 from pyrogram.errors import ChatAdminRequired, FloodWait
 from pyrogram.types import *
-from utils import verify_user, check_token, check_verification, get_token, verify_user_system_1, verify_user_system_2
+from utils import check_token, check_verification, get_token, verify_user_system_1, verify_user_system_2
 from config import *
 import re
 import json
